@@ -30,9 +30,11 @@ namespace Server
                         bytes = socketClient.Receive(data);
                         stringBuilder.Append(Encoding.Unicode.GetString(data, 0, bytes));
                     } while (socketClient.Available > 0);
+                    
                     words = stringBuilder.ToString().Split(' ');
-                    Console.WriteLine($"{DateTime.Now}: \"{stringBuilder}\" / {words.Length} words");
-                    //socketClient.Send();
+                    socketClient.Send(Encoding.Unicode.GetBytes($"Your sentence \"{stringBuilder}\" is have {words.Length} words"));
+
+                    Console.WriteLine($"{DateTime.Now} : \"{stringBuilder}\" / {words.Length} words");
                     socketClient.Shutdown(SocketShutdown.Both);
                     socketClient.Close();
                 }
@@ -40,7 +42,6 @@ namespace Server
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-
             }
         }
     }

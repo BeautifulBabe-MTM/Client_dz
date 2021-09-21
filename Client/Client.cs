@@ -20,6 +20,7 @@ namespace Client
                 socket.Connect(iPEndPoint);
                 int bytes = 0;
                 byte[] data = new byte[256];
+
                 StringBuilder stringBuilder = new StringBuilder();
                 do
                 {
@@ -28,15 +29,22 @@ namespace Client
                 } while (socket.Available > 0);
                 Console.WriteLine(stringBuilder.ToString());
 
-                Console.WriteLine("Enter quastion for server...");
+                Console.WriteLine("Enter the sentence...");
                 string sms = Console.ReadLine();
                 data = Encoding.Unicode.GetBytes(sms);
                 socket.Send(data);
-                Console.WriteLine($"\"{sms.ToString()}\" was send to SERVER [{ipAddr}]!");
+                Console.WriteLine($"\"{sms}\" was send to SERVER [{ipAddr}]!");
+                
+                do
+                {
+                    bytes = socket.Receive(data);
+                    stringBuilder.Append(Encoding.Unicode.GetString(data, 0, bytes));
+                } while (socket.Available > 0);
+                Console.WriteLine(stringBuilder.ToString());
+
             }
             catch (Exception ex)
             {
-
                 Console.WriteLine(ex.Message);
             }
         }

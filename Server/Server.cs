@@ -6,7 +6,6 @@ using System.Text;
 namespace Server
 {
     class Server
-
     {
         static int port = 8000;
         static void Main(string[] args)
@@ -24,13 +23,16 @@ namespace Server
                     socketClient.Send(Encoding.Unicode.GetBytes("Welcome to the server..."));
                     StringBuilder stringBuilder = new StringBuilder();
                     int bytes = 0;
+                    string[] words;
                     byte[] data = new byte[256];
                     do
                     {
                         bytes = socketClient.Receive(data);
                         stringBuilder.Append(Encoding.Unicode.GetString(data, 0, bytes));
                     } while (socketClient.Available > 0);
-                    Console.WriteLine($"MSG: {stringBuilder.ToString()}");
+                    words = stringBuilder.ToString().Split(' ');
+                    Console.WriteLine($"{DateTime.Now}: \"{stringBuilder}\" / {words.Length} words");
+                    //socketClient.Send();
                     socketClient.Shutdown(SocketShutdown.Both);
                     socketClient.Close();
                 }

@@ -7,7 +7,7 @@ namespace Client
 {
     class Program
     {
-        static string ipAddr  = "127.0.0.1";
+        static string ipAddr = "127.0.0.1";
         static int port = 8000;
         static int a = 2;
         static int b = 2;
@@ -32,7 +32,7 @@ namespace Client
                 string sms = Console.ReadLine();
                 data = Encoding.Unicode.GetBytes(sms);
                 socket.Send(data);
-                Console.WriteLine($"Sms \"{a + b}\" send to SERVER [{ipAddr}]!");
+                Console.WriteLine($"\"{sms.ToString()}\" was send to SERVER [{ipAddr}]!");
             }
             catch (Exception ex)
             {

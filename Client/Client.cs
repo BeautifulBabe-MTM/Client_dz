@@ -7,7 +7,7 @@ namespace Client
 {
     class Program
     {
-        static string ipAddr = "127.0.0.1";
+        static string ipAddr  = "127.0.0.1";
         static int port = 8000;
         static int a = 2;
         static int b = 2;

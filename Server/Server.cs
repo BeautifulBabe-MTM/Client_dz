@@ -7,42 +7,22 @@ namespace Server
 {
     class Server
     {
-        static int port = 8000;
         static void Main(string[] args)
         {
-            IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), port);
-            Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            Server1 server1 = new Server1();
             Console.WriteLine("Start server please wait...");
             try
             {
-                socket.Bind(iPEndPoint);
-                socket.Listen(10);
-                while (true)
-                {
-                    Socket socketClient = socket.Accept();
-                    socketClient.Send(Encoding.Unicode.GetBytes("Welcome to the server..."));
-                    StringBuilder stringBuilder = new StringBuilder();
-                    int bytes = 0;
-                    string[] words;
-                    byte[] data = new byte[256];
-                    do
-                    {
-                        bytes = socketClient.Receive(data);
-                        stringBuilder.Append(Encoding.Unicode.GetString(data, 0, bytes));
-                    } while (socketClient.Available > 0);
-                    
-                    words = stringBuilder.ToString().Split(' ');
-                    socketClient.Send(Encoding.Unicode.GetBytes($"Your sentence \"{stringBuilder}\" is have {words.Length} words"));
-
-                    Console.WriteLine($"{DateTime.Now} : \"{stringBuilder}\" / {words.Length} words");
-                    socketClient.Shutdown(SocketShutdown.Both);
-                    socketClient.Close();
-                }
+                server1.Bind();
+                server1.GetMsg();
+                server1.sendMsg("got it");
+               
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
+            Console.ReadLine();
         }
     }
 }

@@ -7,40 +7,16 @@ namespace Client
 {
     class Program
     {
-        static string ipAddr = "127.0.0.1";
-        static int port = 8000;
-        static int a = 2;
-        static int b = 2;
         static void Main(string[] args)
         {
+            Client1 client1 = new Client1();
             try
             {
-                IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse(ipAddr), port);
-                Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                socket.Connect(iPEndPoint);
-                int bytes = 0;
-                byte[] data = new byte[256];
 
-                StringBuilder stringBuilder = new StringBuilder();
-                do
-                {
-                    bytes = socket.Receive(data);
-                    stringBuilder.Append(Encoding.Unicode.GetString(data, 0, bytes));
-                } while (socket.Available > 0);
-                Console.WriteLine(stringBuilder.ToString());
-
-                Console.WriteLine("Enter the sentence...");
+                client1.connectToServer();
                 string sms = Console.ReadLine();
-                data = Encoding.Unicode.GetBytes(sms);
-                socket.Send(data);
-                Console.WriteLine($"\"{sms}\" was send to SERVER [{ipAddr}]!");
-                
-                do
-                {
-                    bytes = socket.Receive(data);
-                    stringBuilder.Append(Encoding.Unicode.GetString(data, 0, bytes));
-                } while (socket.Available > 0);
-                Console.WriteLine(stringBuilder.ToString());
+                client1.sendMsg(sms);
+                client1.getMsg();
 
             }
             catch (Exception ex)
